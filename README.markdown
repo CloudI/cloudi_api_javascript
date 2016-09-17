@@ -2,6 +2,7 @@
 =======================
 
 [![Build Status](https://travis-ci.org/CloudI/cloudi_api_javascript.png)](https://travis-ci.org/CloudI/cloudi_api_javascript)
+[![npm Package Version](https://img.shields.io/npm/v/cloudi.svg?maxAge=2592000)](https://www.npmjs.com/package/cloudi)
 
 Javascript [CloudI API](http://cloudi.org/api.html#1_Intro)
 
