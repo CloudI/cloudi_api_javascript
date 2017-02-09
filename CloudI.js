@@ -404,10 +404,11 @@ CloudI.API.prototype.mcast_async = function (name, request, callback,
     });
 };
 
-CloudI.API.prototype.forward_ = function (command, name, request_info, request,
+CloudI.API.prototype.forward_ = function (request_type, name,
+                                          request_info, request,
                                           timeout, priority, trans_id, pid) {
     var API = this;
-    switch (command) {
+    switch (request_type) {
         case API.ASYNC:
             API.forward_async(name, request_info, request,
                               timeout, priority, trans_id, pid);
@@ -471,11 +472,11 @@ CloudI.API.prototype.forward_sync = function (name, request_info, request,
     });
 };
 
-CloudI.API.prototype.return_ = function (command, name, pattern,
+CloudI.API.prototype.return_ = function (request_type, name, pattern,
                                          response_info, response,
                                          timeout, trans_id, pid) {
     var API = this;
-    switch (command) {
+    switch (request_type) {
         case API.ASYNC:
             API.return_async(name, pattern, response_info, response,
                              timeout, trans_id, pid);
@@ -795,6 +796,18 @@ CloudI.API.prototype._handle_events = function (data, data_size, i, command) {
             case MESSAGE_REINIT:
                 API._process_count = unpackUint32(i, data);
                 i += 4;
+                API._timeout_async = unpackUint32(i, data);
+                i += 4;
+                API._timeout_sync = unpackUint32(i, data);
+                i += 4;
+                API._priority_default = unpackInt8(i, data);
+                i += 1;
+                API._request_timeout_adjustment = unpackUint8(i, data);
+                i += 1;
+                if (API._request_timeout_adjustment) {
+                    API._request_timer = new Date().getTime();
+                    API._request_timeout = 0;
+                }
                 break;
             case MESSAGE_KEEPALIVE:
                 API._send(new Erlang.OtpErlangAtom('keepalive'));
@@ -971,6 +984,18 @@ CloudI.API.prototype._poll_request = function (data) {
             case MESSAGE_REINIT:
                 API._process_count = unpackUint32(i, data);
                 i += 4;
+                API._timeout_async = unpackUint32(i, data);
+                i += 4;
+                API._timeout_sync = unpackUint32(i, data);
+                i += 4;
+                API._priority_default = unpackInt8(i, data);
+                i += 1;
+                API._request_timeout_adjustment = unpackUint8(i, data);
+                i += 1;
+                if (API._request_timeout_adjustment) {
+                    API._request_timer = new Date().getTime();
+                    API._request_timeout = 0;
+                }
                 if (i == data_size) {
                     return;
                 }
