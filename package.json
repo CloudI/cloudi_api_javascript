@@ -8,7 +8,7 @@
         "type": "git",
         "url": "git://github.com/CloudI/cloudi_api_javascript.git"
     },
-    "license": "BSD-4-Clause",
+    "license": "MIT",
     "keywords": [
         "cloud",
         "erlang",
