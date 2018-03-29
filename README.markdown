@@ -11,7 +11,7 @@ Available as a [npm package at `https://www.npmjs.com/package/cloudi`](https://w
 Author
 ------
 
-Michael Truog (mjtruog [at] gmail (dot) com)
+Michael Truog (mjtruog at protonmail dot com)
 
 License
 -------
